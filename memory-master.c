@@ -48,12 +48,6 @@ int card_shuffle() {
   // Set the locale to support wide characters
   setlocale(LC_ALL, "");
 
-  // Define the array of cards
-  // wchar_t cards[totalCards] = L"🂡🂢🂣🂤🂥🂦🂧🂨🂩🂪🂫🂭🂮"
-  // L"🂱🂲🂳🂴🂵🂶🂷🂸🂹🂺🂻🂽🂾"
-  // L"🃁🃂🃃🃄🃅🃆🃇🃈🃉🃊🃋🃍🃎"
-  // L"🃑🃒🃓🃔🃕🃖🃗🃘🃙🃚🃛🃝🃞";
-
   wchar_t *deck[] = {L"♥️1",  L"♥️2",  L"♥️3", L"♥️4",  L"♥️5", L"♥️6", L"♥️7",  L"♥️8",
                      L"♥️9",  L"♥️10", L"♥️J", L"♥️Q",  L"♥️K", L"♦️1", L"♦️2",  L"♦️3",
                      L"♦️4",  L"♦️5",  L"♦️6", L"♦️7",  L"♦️8", L"♦️9", L"♦️10", L"♦️J",
