@@ -80,7 +80,6 @@ int card_shuffle() {
 }
 
 int main(int argc, char *argv[]) {
-  setlocale(LC_ALL, "");
   printRandomDigitMatrix(4, 13, 2);
   card_shuffle();
   return 0;
