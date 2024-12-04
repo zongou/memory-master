@@ -89,8 +89,13 @@ int main(int argc, char *argv[]) {
 Memory Master\n\
 \n\
 Usage:\n\
-  memory-master [OPTION]...\n\
+  memory-master [COMMANDS]... [OPTION]...\n\
 \n\
+Commands:\n\
+  n, numbers\n\
+      print random numbers\n\
+  c, cards\n\
+      print shuffled cards\n\
 Options:\n\
   -h, --help\n\
       display this help and exit\n\
@@ -98,7 +103,7 @@ Options:\n\
       sleep for SECONDS milliseconds between each output\n\
 \n\
 Examples:\n\
- memory-master numbers\n\
+ memory-master numbers cards\n\
 ";
 
   static struct option long_options[] = {
@@ -138,7 +143,8 @@ Examples:\n\
       optind = optind + 1;
     }
   } else {
-    fputs(help_info, stderr);
+    printRandomDigitMatrix(4, 13, 2);
+    card_shuffle();
   }
 
   return 0;
