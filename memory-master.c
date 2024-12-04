@@ -4,7 +4,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/random.h>
+#include <unistd.h>
 #include <wchar.h>
+
+int period = 0;
+
+void periodically_output(int period) {
+  usleep(period); // Sleep for 1000 milliseconds (1 second)
+  fflush(stdout);
+}
 
 // Function to generate a random number
 unsigned int getRandom() {
@@ -24,6 +32,7 @@ int printRandomDigitMatrix(int column, int row, int width) {
       for (int k = 0; k < width; k = k + 1) {
         printf("%d", getRandom() % 10);
       }
+      periodically_output(period);
       printf("\t");
     }
     printf("\n");
@@ -63,6 +72,7 @@ int card_shuffle() {
   // Print the shuffled cards
   for (int i = 0; i < totalCards; i++) {
     wprintf(L"%ls \t", deck[i]);
+    periodically_output(period);
     // if ((i + 1) % width == 0) {
     //   wprintf(L"\t");
     // }
@@ -74,7 +84,62 @@ int card_shuffle() {
 }
 
 int main(int argc, char *argv[]) {
-  printRandomDigitMatrix(4, 13, 2);
-  card_shuffle();
+
+  char *help_info = "\
+Memory Master\n\
+\n\
+Usage:\n\
+  memory-master [OPTION]...\n\
+\n\
+Options:\n\
+  -h, --help\n\
+      display this help and exit\n\
+  -p, --period=SECONDS\n\
+      sleep for SECONDS milliseconds between each output\n\
+\n\
+Examples:\n\
+ memory-master numbers\n\
+";
+
+  static struct option long_options[] = {
+      {"help", no_argument, NULL, 'h'},
+      {"period", required_argument, NULL, 'p'},
+      {NULL, 0, NULL, 0}};
+
+  int c;
+  int option_index = 0;
+  while ((c = getopt_long(argc, argv, "hp:", long_options, &option_index)) !=
+         -1) {
+    switch (c) {
+    case 0:
+      break;
+    case 'h':
+      fputs(help_info, stderr);
+      return EXIT_SUCCESS;
+    case 'p':
+      period = atoi(optarg) * 1000;
+      break;
+    default:
+      abort();
+    }
+  }
+
+  /* Print any remaining command line arguments (not options). */
+  if (optind < argc) {
+    while (optind < argc) {
+      if (strcmp("n", argv[optind]) == 0 ||
+          strcmp("numbers", argv[optind]) == 0) {
+        printRandomDigitMatrix(4, 13, 2);
+      }
+      if (strcmp("c", argv[optind]) == 0 ||
+          strcmp("cards", argv[optind]) == 0) {
+        card_shuffle();
+      }
+      optind = optind + 1;
+    }
+  } else {
+    fputs(help_info, stderr);
+  }
+
   return 0;
 }
