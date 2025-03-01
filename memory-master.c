@@ -65,8 +65,8 @@ int card_shuffle() {
   for (int i = 0; i < 4; i++) {
     for (int j = 0; j < 13; j++) {
       deck[index++] = (wchar_t *)malloc((wcslen(suits[i]) + wcslen(ranks[j]) + 1) * sizeof(wchar_t));
-      wcscpy(deck[index - 1], suits[i]);
-      wcscat(deck[index - 1], ranks[j]);
+      wcscpy(deck[index - 1], ranks[j]);
+      wcscat(deck[index - 1], suits[i]);
     }
   }
 
