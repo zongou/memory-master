@@ -57,13 +57,18 @@ int card_shuffle() {
   // Set the locale to support wide characters
   setlocale(LC_ALL, "");
 
-  wchar_t *deck[] = {L"♥️1",  L"♥️2",  L"♥️3", L"♥️4",  L"♥️5", L"♥️6", L"♥️7",  L"♥️8",
-                     L"♥️9",  L"♥️10", L"♥️J", L"♥️Q",  L"♥️K", L"♦️1", L"♦️2",  L"♦️3",
-                     L"♦️4",  L"♦️5",  L"♦️6", L"♦️7",  L"♦️8", L"♦️9", L"♦️10", L"♦️J",
-                     L"♦️Q",  L"♦️K",  L"♠️1", L"♠️2",  L"♠️3", L"♠️4", L"♠️5",  L"♠️6",
-                     L"♠️7",  L"♠️8",  L"♠️9", L"♠️10", L"♠️J", L"♠️Q", L"♠️K",  L"♣️1",
-                     L"♣️2",  L"♣️3",  L"♣️4", L"♣️5",  L"♣️6", L"♣️7", L"♣️8",  L"♣️9",
-                     L"♣️10", L"♣️J",  L"♣️Q", L"♣️K"};
+  wchar_t *suits[] = {L"♥️", L"♦️", L"♠️", L"♣️"};
+  wchar_t *ranks[] = {L"1", L"2", L"3", L"4", L"5", L"6", L"7", L"8", L"9", L"0", L"J", L"Q", L"K"};
+  wchar_t *deck[52];
+  int index = 0;
+
+  for (int i = 0; i < 4; i++) {
+    for (int j = 0; j < 13; j++) {
+      deck[index++] = (wchar_t *)malloc((wcslen(suits[i]) + wcslen(ranks[j]) + 1) * sizeof(wchar_t));
+      wcscpy(deck[index - 1], suits[i]);
+      wcscat(deck[index - 1], ranks[j]);
+    }
+  }
 
   // Shuffle the cards
   int totalCards = sizeof(deck) / sizeof(deck[0]);
@@ -73,12 +78,10 @@ int card_shuffle() {
   for (int i = 0; i < totalCards; i++) {
     wprintf(L"%ls \t", deck[i]);
     periodically_output(period);
-    // if ((i + 1) % width == 0) {
-    //   wprintf(L"\t");
-    // }
-    if ((i + 1) % 4 == 0) { // Print a newline every 13 cards
+    if ((i + 1) % 4 == 0) { // Print a newline every 4 cards
       wprintf(L"\n");
     }
+    free(deck[i]); // Free allocated memory
   }
   return 0;
 }
